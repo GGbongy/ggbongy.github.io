@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>vscode配置 | Gao Yue's Blog</title><meta name="author" content="Gao Yue,2181692851@qq.com"><meta name="copyright" content="Gao Yue"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="vscode+GCC+cmake配置1. 下载安装 下载清单                             作用 下载链接    vscode 编辑器 请点我   MinGW 一个工具包 请点我  (下这个：x86_64-14.2.0-release-posix-seh-ucrt-rt_v12-rev1.7z)   CMake 项目管理工具 请点我   Git 项目管理工具 请点我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vscode配置">
+<meta property="og:url" content="http://example.com/2025/03/20/vscode%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="Gao Yue&#39;s Blog">
+<meta property="og:description" content="vscode+GCC+cmake配置1. 下载安装 下载清单                             作用 下载链接    vscode 编辑器 请点我   MinGW 一个工具包 请点我  (下这个：x86_64-14.2.0-release-posix-seh-ucrt-rt_v12-rev1.7z)   CMake 项目管理工具 请点我   Git 项目管理工具 请点我">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/logo2.png">
+<meta property="article:published_time" content="2025-03-20T13:43:53.000Z">
+<meta property="article:modified_time" content="2025-03-20T14:08:31.355Z">
+<meta property="article:author" content="Gao Yue">
+<meta property="article:tag" content="配置">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/logo2.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "vscode配置",
+  "url": "http://example.com/2025/03/20/vscode%E9%85%8D%E7%BD%AE/",
+  "image": "http://example.com/img/logo2.png",
+  "datePublished": "2025-03-20T13:43:53.000Z",
+  "dateModified": "2025-03-20T14:08:31.355Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Gao Yue",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/03/20/vscode%E9%85%8D%E7%BD%AE/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'vscode配置',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/logo2.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> about</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/index.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/logo.png" alt="Logo"><span class="site-name">Gao Yue's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">vscode配置</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> about</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">vscode配置</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-20T13:43:53.000Z" title="发表于 2025-03-20 21:43:53">2025-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-20T14:08:31.355Z" title="更新于 2025-03-20 22:08:31">2025-03-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Tools/">Tools</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="vscode-GCC-cmake配置"><a href="#vscode-GCC-cmake配置" class="headerlink" title="vscode+GCC+cmake配置"></a>vscode+GCC+cmake配置</h1><h2 id="1-下载安装"><a href="#1-下载安装" class="headerlink" title="1. 下载安装"></a>1. 下载安装</h2><blockquote>
+<p>下载清单                        </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>作用</th>
+<th>下载链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vscode</td>
+<td>编辑器</td>
+<td><a target="_blank" rel="noopener" href="https://code.visualstudio.com/">请点我</a></td>
+</tr>
+<tr>
+<td>MinGW</td>
+<td>一个工具包</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/niXman/mingw-builds-binaries/releases">请点我</a>  (下这个：x86_64-14.2.0-release-posix-seh-ucrt-rt_v12-rev1.7z)</td>
+</tr>
+<tr>
+<td>CMake</td>
+<td>项目管理工具</td>
+<td><a target="_blank" rel="noopener" href="https://cmake.org/">请点我</a></td>
+</tr>
+<tr>
+<td>Git</td>
+<td>项目管理工具</td>
+<td><a target="_blank" rel="noopener" href="https://git-scm.com/downloads">请点我</a></td>
+</tr>
+</tbody></table>
+</blockquote>
+<blockquote>
+<p>关于Git<br>Git 是很好的项目管理工具，但在这给配置中并不是必须安装的。但我强烈建议你装一个，因为有了Git才能使用Github.Git是一个命令行工具，这对于新手来说太吃操作了，但有许多Git的图形化工具，可以帮你快速上手。vscode也提供了Git图形化插件</p>
+</blockquote>
+<blockquote>
+<p>关于环境变量<br>vscode并不知道你的电脑上装了什么。如果你希望你的 vscode能找到你装的某个东西，你就应该把它写到环境变量里。<br>对于这个教程，只需要您把CMake和GCC写到环境变量里。在你下载Cmake的时候，应该会让你选择是否配置环境变量，你选中这个选项就行了。而GCC则需要你自己配置。</p>
+</blockquote>
+<hr>
+<h2 id="2-vscode-插件"><a href="#2-vscode-插件" class="headerlink" title="2. vscode 插件"></a>2. vscode 插件</h2><ul>
+<li><p><strong>汉化</strong></p>
+<p>  打开vscode后，默认情况下是全英文的界面，但我们可以通过下载插件把我们的界面汉化:yum:。</p>
+<p>  默认情况下这是vscode侧边栏从上往下数第五个图标，点击它，就可以进入扩展商店。在搜索栏输入“Chinese”,找到<strong>Chinese (Simplified) (简体中文) Language Pack</strong>，安装它，之后 <code>Ctrl+Shift+P</code>，输入<code>&gt; Configure Display Language</code>,选择中文。（新版本中，安装完插件应该会自动弹出选择语言的选项）</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><strong>安装C&#x2F;C++扩展包</strong></li>
+</ul>
+<blockquote>
+<p> <strong>以下插件是必装的</strong></p>
+</blockquote>
+<blockquote>
+<ul>
+<li><strong>C&#x2F;C++</strong></li>
+<li><strong>C&#x2F;C++ Themes</strong></li>
+<li><strong>C&#x2F;C++Extension Pack</strong></li>
+<li><strong>CMake</strong></li>
+<li><strong>CMake Tools</strong></li>
+</ul>
+</blockquote>
+<pre><code>有了这些插件，就可以正常进行编程了。但如果想要有更好的代码提示和警告，还需安装一些其他插件
+</code></pre>
+<hr>
+<ul>
+<li><strong>其他插件</strong></li>
+</ul>
+<blockquote>
+<p> 好用的其他插件</p>
+</blockquote>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Error Lens</strong></td>
+<td>高亮错误和警报</td>
+</tr>
+<tr>
+<td><strong>Tabnine</strong></td>
+<td>AI代码助手，有代码提示、自动生成代码、代码解释等功能</td>
+</tr>
+<tr>
+<td><strong>indent-rainbow</strong></td>
+<td>更好地显示缩进</td>
+</tr>
+</tbody></table>
+</blockquote>
+<blockquote>
+<p>主题插件</p>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Material Icon Theme</strong></td>
+<td>个性化地设置你的文件夹和文件图标</td>
+</tr>
+<tr>
+<td><strong>Dracula Theme Official</strong></td>
+<td>好看的吸血鬼主题</td>
+</tr>
+<tr>
+<td><strong>👉 Emoji File Icons 👈</strong></td>
+<td>有趣的产品图标主题</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h2 id="3-进一步配置"><a href="#3-进一步配置" class="headerlink" title="3. 进一步配置"></a>3. 进一步配置</h2><p>针对不同的需求，您可以选择不同的配置</p>
+<ul>
+<li>也许您是一个初学者，您使用vscode是为了更高效的完成你的作业，且您的作业只涉及较少的源文件，那么您可以不用CMake,仅通过配置.json文件来完成编译和调试</li>
+<li>也许随着学习的深入，您的作业需要您编写几十甚至十几个源文件来构成一个项目，那么您可以考虑用CMake更高效地管理项目</li>
+</ul>
+<h3 id="1-不使用cmake"><a href="#1-不使用cmake" class="headerlink" title="1. 不使用cmake"></a>1. 不使用cmake</h3><p>把以下代码复制到你的.json文件里就行了</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span>    <span class="comment">//launch.json</span></span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;(gdb) 启动&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cppdbg&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="comment">//&quot;program&quot;: &quot;输入程序名称，例如 $&#123;workspaceFolder&#125;/a.exe&quot;,</span></span><br><span class="line">            <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;\\a.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;stopAtEntry&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;environment&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;externalConsole&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;MIMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gdb&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="comment">//&quot;miDebuggerPath&quot;: &quot;/path/to/gdb&quot;,</span></span><br><span class="line">            <span class="attr">&quot;miDebuggerPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c:\\MinGW\\bin\\gdb.exe&quot;</span><span class="punctuation">,</span><span class="comment">//这一行写你自己的gdb路径</span></span><br><span class="line">            <span class="attr">&quot;setupCommands&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;为 gdb 启用整齐打印&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-enable-pretty-printing&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;ignoreFailures&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;将反汇编风格设置为 Intel&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-gdb-set disassembly-flavor intel&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;ignoreFailures&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//tasks.json</span></span><br><span class="line"><span class="punctuation">&#123;</span>   </span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;tasks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cppbuild&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;label&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C/C++: g++.exe 生成活动文件&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;C:\\MinGW\\bin\\g++.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;-std=c++23&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;-fdiagnostics-color=always&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;-g&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="comment">//&quot;$&#123;file&#125;&quot;,</span></span><br><span class="line">                <span class="string">&quot;*.cpp&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="comment">//&quot;$&#123;workspaceFolder&#125;\\src\\*.cpp&quot;,</span></span><br><span class="line">               <span class="comment">// &quot;E:\\c++\\include\\PPPheaders.h&quot;,</span></span><br><span class="line">                <span class="comment">//&quot;-I&quot;,&quot;$&#123;workspaceFolder&#125;\\include&quot;,//&quot;-I&quot;,&quot;包含的头文件的路径&quot;,</span></span><br><span class="line">                <span class="comment">//&quot;$&#123;fileDirname&#125;\\*.cpp&quot;,</span></span><br><span class="line">                <span class="string">&quot;-o&quot;</span><span class="punctuation">,</span></span><br><span class="line">               <span class="comment">// &quot;$&#123;fileDirname&#125;\\$&#123;fileBasenameNoExtension&#125;.exe&quot;</span></span><br><span class="line">                <span class="string">&quot;$&#123;fileDirname&#125;\\a.exe&quot;</span></span><br><span class="line">                <span class="comment">//&quot;$&#123;fileDirname&#125;\\bin\\$&#123;fileBasenameNoExtension&#125;.exe&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;options&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;problemMatcher&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;$gcc&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;group&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;kind&quot;</span><span class="punctuation">:</span> <span class="string">&quot;build&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;isDefault&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;detail&quot;</span><span class="punctuation">:</span> <span class="string">&quot;调试器生成的任务。&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2.0.0&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用cmake"><a href="#2-使用cmake" class="headerlink" title="2. 使用cmake"></a>2. 使用cmake</h3><blockquote>
+<p>确保你安装了CMake(不是CMake插件)，并配置了环境变量。<br>确认方法：打开cmd，输入<code>cmake --version</code>并按 <code>Enter</code>如果显示了cmake的版本，就没问题了<br>配置过程同样简单</p>
+</blockquote>
+<p>在你的项目根目录下新建一个 <code>CMakeLists.txt</code>文件。vscode会帮你自动生成一个<code>build</code>目录。</p>
+<blockquote>
+<p><code>CMakeLists.txt</code>一个字母都不能错，包括大小写！<br>在根目录下新建<code>include</code>、 <code>src</code>、<code>bin</code>三个目录<br>直接把以下代码copy到 <code>CMakeLists.txt</code></p>
+</blockquote>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.15</span>)</span><br><span class="line"><span class="keyword">project</span>(HelloWorld)</span><br><span class="line"><span class="keyword">set</span>(CMAKE_CXX_STANDARD <span class="number">17</span>)</span><br><span class="line"><span class="keyword">aux_source_directory</span>(<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/src SRC )</span><br><span class="line"><span class="keyword">set</span> (EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/bin)</span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"><span class="keyword">add_executable</span>(main main.cpp <span class="variable">$&#123;SRC&#125;</span>)</span><br></pre></td></tr></table></figure>
+<p>在<code>include</code>下放<code>.h</code>文件，在<code>src</code>下放 <code>.cpp</code>文件,构建项目后，<code>.exe</code>文件会自动在<code>bin</code>下生成</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Gao Yue</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/20/vscode%E9%85%8D%E7%BD%AE/">http://example.com/2025/03/20/vscode%E9%85%8D%E7%BD%AE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">Gao Yue's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE/">配置</a></div><div class="post-share"><div class="social-share" data-image="/img/logo2.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/03/19/hello-world/" title="Hello World"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Hello World</div></div><div class="info-2"><div class="info-item-1">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/logo2.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Gao Yue</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/GGbongy"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/GGbongy" target="_blank" title="Github"><i class="fab fa-github" style="color: #696969;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Gao Yue's Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vscode-GCC-cmake%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">vscode+GCC+cmake配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">1. 下载安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-vscode-%E6%8F%92%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">2. vscode 插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">3. 进一步配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8D%E4%BD%BF%E7%94%A8cmake"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 不使用cmake</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8cmake"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 使用cmake</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/20/vscode%E9%85%8D%E7%BD%AE/" title="vscode配置">vscode配置</a><time datetime="2025-03-20T13:43:53.000Z" title="发表于 2025-03-20 21:43:53">2025-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/19/hello-world/" title="Hello World">Hello World</a><time datetime="2025-03-19T12:09:03.664Z" title="发表于 2025-03-19 20:09:03">2025-03-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Gao Yue</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
